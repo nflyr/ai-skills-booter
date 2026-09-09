@@ -2,27 +2,27 @@
 
 A CLI tool for bootstrapping AI skills and agents into local repositories from github, with a customized installation script for specific Agent Managers.
 
-Keep only the `setup-skills` script on your system, and use it to bootstrap the skills setup into your repository from github.
+Keep only the `install-skills` script on your system, and use it to bootstrap the skills setup into your repository from github.
 
 Requires the `git` command line tool.
 
 Example:
 
 ```bash
-setup-skills . copilot
+install-skills copilot .
 ```
 
-The current development has a focus on Copilot and Devin.
+The current development has a focus on Copilot and Devin, but the tool is designed to be extensible to other agent managers in the future.
 
 A large portion of the contents of the sub-folder `skills` is originally based on the work of [Matt Pocock](https://github.com/mattpocock/skills).
 
 ## TODO
 
-[ ] Add a description of the project and its purpose.
+[90%] Add a description of the project and its purpose.
 
-[ ] Add a copyright notice with credits to Matt Pocock.
+[done] Add a copyright notice with credits to Matt Pocock.
 
-[ ] Build a script to automate the setup of the development environment.
+[80%] Build a script to automate the setup of the development environment.
 
 [ ] Implement a basic skill invocation policy (sub-agents).
 

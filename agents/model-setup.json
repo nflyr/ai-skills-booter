@@ -3,12 +3,12 @@
     "copilot": {
       "root": ".github",
       "skills": "all",
-      "ignore": ["agents/", "CLAUDE.md"]
+      "omit": ["CLAUDE.md"]
     },
     "devin": {
       "root": ".devin",
       "skills": "all",
-      "ignore": ["agents/", "CLAUDE.md"]
+      "omit": ["agents/", "CLAUDE.md"]
     }
   }
 }
