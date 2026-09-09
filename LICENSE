@@ -12,7 +12,10 @@ furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 
-A large portion of the contents of the sub-folder `skills` is originally based on the work of [Matt Pocock](https://github.com/mattpocock/skills), and is licensed under the MIT License. The original copyright notice and license can be found in the `LICENSE-MATT` file in this folder.
+A large portion of the contents of the sub-folder `skills` is originally based
+on the work of [Matt Pocock](https://github.com/mattpocock/skills), and is
+licensed under the MIT License. The original copyright notice and license
+can be found in the `LICENSE-MATT` file in this folder.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
