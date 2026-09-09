@@ -1,0 +1,14 @@
+{
+  "agentManagers": {
+    "copilot": {
+      "root": ".github",
+      "skills": "all",
+      "ignore": ["agents/", "CLAUDE.md"]
+    },
+    "devin": {
+      "root": ".devin",
+      "skills": "all",
+      "ignore": ["agents/", "CLAUDE.md"]
+    }
+  }
+}
