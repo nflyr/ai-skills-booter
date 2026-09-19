@@ -106,7 +106,7 @@ function appendAgentsFile(targetFile, newContent) {
 function install(sourceRoot, targetRoot, manager) {
   const config = readConfig(sourceRoot, manager);
   const skills = selectedSkills(sourceRoot, config.skills);
-  const destination = path.join(targetRoot, config.root);
+  const destination = path.join(targetRoot, `${config.root}/skills`);
   for (const skill of skills) copyTree(path.join(sourceRoot, "skills", skill), path.join(destination, skill), config.omit);
   const agentFile = path.join(sourceRoot, "agents", manager, "AGENTS.md");
   if (!fs.existsSync(agentFile)) throw new Error(`Missing agent instructions: ${manager}/AGENTS.md`);

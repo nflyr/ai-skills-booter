@@ -1,3 +1,5 @@
+> Este documento foi gerado pelo assistente usando o modelo "Copilot+GPT-5.6 Luna", com base na mesma prompt exacta solicitando a craiçaõ de especificações de implementação para o script de instalação de skills. (guardei-o apenas para comparação coo o equivalente do modelo "Copilot+Auto").
+
 # Install Skills Implementation Instructions
 
 ## Goal

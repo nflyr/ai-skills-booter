@@ -1,3 +1,5 @@
+> Este documento foi gerado pelo assistente usando o modelo "Copilot+Auto", com base na mesma prompt exacta solicitando a craiçaõ de especificações de implementação para o script de instalação de skills. (guardei-o apenas para comparação coo o equivalente do modelo "Copilot+GPT-5.6 Luna").
+
 # Install skills implementation instructions
 
 ## Objective
@@ -273,4 +275,3 @@ The safest production behavior is:
 ## Notes for the implementation agent
 
 Do not invent a different configuration format. Use the repository's actual `agentManagers` structure and support both the requirement language and the actual JSON currently in the repo. The repo is the source of truth, and the installer should behave in the same way a user expects when they run it inside their own project.
-

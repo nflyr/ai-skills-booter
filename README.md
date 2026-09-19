@@ -12,6 +12,15 @@ Example:
 install-skills copilot .
 ```
 
+If you need to login to github, you can use the `gh` command line tool to authenticate first:
+
+```bash
+gh auth login
+gh auth setup-git
+# (now open a new terminal)
+install-skills copilot .
+```
+
 The current development has a focus on Copilot and Devin, but the tool is designed to be extensible to other agent managers in the future.
 
 A large portion of the contents of the sub-folder `skills` is originally based on the work of [Matt Pocock](https://github.com/mattpocock/skills).
