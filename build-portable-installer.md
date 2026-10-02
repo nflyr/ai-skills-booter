@@ -1,32 +1,36 @@
-> Este documento foi gerado pelo assistente usando o modelo "Copilot+GPT-5.6 Luna", com base na mesma prompt exacta solicitando a craiçaõ de especificações de implementação para o script de instalação de skills. (guardei-o apenas para comparação coo o equivalente do modelo "Copilot+Auto").
+# Job
 
-# Install Skills Implementation Instructions
-
-## Goal
-
-Implement a portable installer for this repository. A user must be able to download the Linux or Windows wrapper from `scripts/` and run it against a local target repository to install the configured skills and agent instructions.
-
-## Required deliverables
-
-Create these files under `scripts/`:
-
-- `install-skills.sh`: POSIX/Linux Bash wrapper.
-- `install-skills.cmd`: Windows CMD wrapper.
-- `install-skills.js`: Node.js implementation shared by both wrappers.
-
-Do not add dependencies. The supported runtime is Node.js plus the system `git` executable.
+Implement a portable installer based on downloading parts of this repository into the user's local system and place them in the appropriate locations.
 
 ## CLI contract
 
-The wrappers must forward their arguments to the Node implementation. Support this form:
+The user must download and make available the scripts locally before running them.
+
+Create these files under `scripts/`:
+
+- `install-agents.sh`: POSIX/Linux Bash wrapper.
+- `install-agents.cmd`: Windows CMD wrapper.
+- `install-agents.js`: Node.js implementation shared by both wrappers.
+
+Syntax for running the scripts is:
 
 ```text
-install-skills <agent-manager> [target-repository]
+install-agents <agent-manager> [target-repository]
 ```
 
-The first argument is the agent manager. The optional second argument is the target repository and defaults to `.`. Reject missing or extra-invalid arguments with a useful error and a non-zero exit code. Resolve the target path before doing any writes.
+- `<agent-manager>` is the key of the agent manager to install. The agent manager is a key in `agents/model-setup.json` (currently `copilot` and `devin`). Do not infer or silently fall back to another manager.
 
-The agent manager is a key in `agents/model-setup.json` (currently `copilot` and `devin`). Do not infer or silently fall back to another manager.
+- `[target-repository]` is the optional path to the target repository, defaulting to the current directory (`.`).
+
+## Available tools
+
+Expect the following tools available in the user's environment:
+
+- [curl](https://curl.se/)
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/)
+
+Do not add other dependencies.
 
 ## Source acquisition
 
