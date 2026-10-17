@@ -2,9 +2,91 @@
 
 Implement a portable installer based on downloading parts of this repository into the user's local system and place them in the appropriate locations.
 
-## CLI contract
+The user MUST download and make available the scripts locally before running them.
 
-The user must download and make available the scripts locally before running them.
+## Design decisions to lock in
+
+### 1) Script naming and placement
+
+- Place the implementation entrypoint at `scripts/install-agents.js`.
+- Create wrappers:
+   - `scripts/install-agents` for Linux/macOS Bash
+   - `scripts/install-agents.cmd` for Windows CMD
+- Keep the wrappers as thin launchers that call Node with the JS entrypoint.
+
+### 2) Invocation contract
+
+Recommended CLI:
+
+```bash
+install-skills <for_agent>
+install-skills <for_agent> --repo /path/to/repo
+install-skills <for_agent> --help
+```
+
+Rules:
+
+- Argument `for_agent` is required. If missing, print a clear error to stderr and exit with code 1.
+- If `--repo` is omitted, use the current working directory as the target repository.
+- If `--repo` is provided, resolve it to an absolute path and use it as the target repository.
+
+### 3) Validation and confirmation flow
+
+Before performing any write operation:
+
+- Verify `git` is available in `PATH`.
+- If not, print an error and exit with code 1.
+- Ask for confirmation using a safe interactive prompt such as `Proceed with installation? [y/N]`.
+- If the user declines, exit with code 0 without making changes.
+- If the user confirms, continue.
+
+### 4) Repository source and temp download behavior
+
+The install process must operate from a temporary folder in the system temp directory.
+
+Implementation strategy:
+
+- Create a temp directory with `fs.mkdtempSync(path.join(os.tmpdir(), 'install-skills-'))`.
+- Download the repository contents needed for installation:
+   - the full `components` directory
+   - The file `scripts/install-agents.js`.
+
+?????????????????????????????????
+
+- Once downloaded, resolve the source paths:
+   - `<temp>/skills`
+   - `<temp>/agents`
+
+### 5) Agent manager lookup
+
+The script must load `<temp>/models.json` into memory. Pseudo-logic:
+
+```js
+const models = JSON.parse(fs.readFileSync(modelSetupPath, "utf8"));
+const agents = models.agents || {};
+const selectedAgent = agents[forAgent];
+if (!selectedAgent) {
+   throw new Error(`No configuration found for agent: ${selectedAgent}`);
+}
+```
+
+### 6) Mapping of resources
+
+From the selected agent (var selectedAgent), read:
+
+- `root`, default to `.agents`
+- `skills.include`, default to `"*"`, otherwise should be an array of skill names.
+- `skills.omit`, default to `[]`
+
+Canonical mapping rules:
+
+```js
+const installRoot = manager.root || ".agents";
+const installSkills = manager.skills || "all";
+const installOmit = manager.omit || [];
+```
+
+b?????????????????????????????
 
 Create these files under `scripts/`:
 
@@ -22,13 +104,14 @@ install-agents <agent-manager> [target-repository]
 
 - `[target-repository]` is the optional path to the target repository, defaulting to the current directory (`.`).
 
-## Available tools
+## Available resources in the user's environment
 
-Expect the following tools available in the user's environment:
+Expect the following tools are available in the user's environment:
 
 - [curl](https://curl.se/)
 - [Node.js](https://nodejs.org/)
 - [npm](https://www.npmjs.com/)
+- Git (command-line tool)
 
 Do not add other dependencies.
 
