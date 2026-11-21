@@ -1,0 +1,10 @@
+{
+   "copilot": {
+      "root": ".github/",
+      "skills": ".github/skills/"
+   },
+   "devin": {
+      "root": ".devin/",
+      "skills": ".devin/skills/"
+   }
+}

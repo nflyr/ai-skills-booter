@@ -1,6 +1,6 @@
 # Agents and Skills booter
 
-This repository conatins AI assistant assets, instructions, skills and agents, as well as the necessary setup scripts for installing them in a target repository.
+This repository contains AI assistant assets, instructions, skills and agents, as well as the necessary setup scripts for installing them in a target repository.
 
 Project structure and contents are organized as follows:
 

@@ -3,64 +3,62 @@ name: arquis
 description: Generate or Modify a Business Component following specific architecture principles.
 ---
 
-By invoking this skill, the user is asking you to generate or modify a Business Component by RELENTLESSLY following the opinionated subset of Domain-Driven Design (DDD) defined in this specification.
-
-**Objective**
-
-The agent should consistently generate or maintain:
-
-- Predictable code structures
-- Discoverable metadata
-- Strong encapsulation
-- Explicit business operations
-- Aggregate-centric consistency boundaries
-- Stable integration contracts
-  The generated architecture is intended for business applications where Domains are exposed as reusable Business Components.
-
-# Core Principals
-
-## 1: Domain = Business Component
-
-**The Domain is the unit of deployment, integration, discoverability and reuse.**
-
-A Domain represents a Business Component:
-
-- Owns a coherent business capability.
-- Exposes a public Service contract.
-- May contain one or more Aggregates.
-- Defines integration boundaries with other Domains.
-
-A Domain may contain one or more Aggregates:
-
-- Each Aggregate is isolated within the Domain.
-- Aggregates are peers and SHALL NOT contain other Aggregates.
-
-<maybe delete this section>
-
-Example:
-
-```text
-Onboarding Domain
-├── Simulation Aggregate
-├── Proposal Aggregate
-└── Onboarding Service
-```
-
-</maybe delete this section>
+By invoking this skill, the user is asking you to generate or modify a software package with a Business Component. You will RELENTLESSLY following the opinionated principles defined in this specification. This specification is divided into three sections: Architectural Concepts (AC), Predictable Structure (PS), and Language Specifics (LS).
 
 ---
 
-## 2: Aggregate = Consistency Boundary
+## Architectural Concepts (AC)
 
-An Aggregate is responsible for maintaining business consistency within its own scope:
+### AC-1: Business Component
 
-- Has exactly one Aggregate Root.
-- Owns its Entities.
-- Owns its Value Objects.
-- Owns its validation rules.
-- Exposes behavior through its Aggregate Root.
+A Business Component (BC) is a software package whose ubiquitous `name` can be well understood by product managers and users. BC is the unit of deployment, integration and discoverability. BCs provide significant value which is exposed to external systems via Controllers.
 
-### 2.1: Model
+A BC hosts one or more Aggregates (each containing one or more Entities) and usually just one Business Facade, keeping components focused and maintainable.
+
+**Importante Note**: **Business Component = Domain**, the terms "Business Component" and "Domain" are unified and used indistinctly in this specification to reference the same conceptual unit within the system architecture.
+
+A BC is composed by the following parts:
+
+- **Discoverability**: The BC SHALL contain a DEFINITION document with metadata, that serves as the reference for understanding the Structure, Invariant and Capabilities of the BC. This document is to be created and maintained by developers, including AI Agents. The following assets are components of discoverability:
+   - The DEFINITION document `<bc-name>-metadata.json`.
+      - Java: The metadata file is localted in the `src/main/resources/<bc-name>` directory.
+      - Node.js or Bun: The metadata file is located in the `<bc>/server` directory of the BC package.
+   - Java: The metadata file is localted in the `src/main/resources` directory of the BC package.
+   - Node.js or Bun: The metadata file is located in the `<bc>/server` directory of the BC package.
+
+**Language Specifics**: The BC SHALL follow the language-specific conventions and directory structures as outlined in the sections below.
+`<bc-name>-metadata.json` that defines the metadata for the Business Component, and serves as the entry point for understanding the structure and capabilities of the BC.
+
+- Java: The metadata file is localted in the `src/main/resources` directory of the BC package.
+- Node.js or Bun: The metadata file is located in the `<bc>/server` directory of the BC package.
+
+A BC is composed of one or more Aggregates, a Business Facade, and supporting artifacts such as Controllers, Domain Services, and Domain Events.
+
+- Domains SHALL have a ubiquitous `name` that is used to prefix all its technical artifacts, represented in this specification as `<bc-name>`.
+- BCs/Domains SHALL:
+   - Own a coherent business capability within the system.
+   - Expose a public Service contract.
+   - Contain one or more Aggregates.
+   - Define integration boundaries with other BCs.
+- Domains contain:
+   - One or more Aggregates.
+   - At least one Controller artifact.
+   - One Domain Service artifactthat at least exposes discoverability of the Domain.
+   - One Domain Events artifact for significant occurrences within the Domain.
+
+### AC-2: Aggregate = Consistency Boundary
+
+Aggregates are responsible for maintaining business consistency within its own scope.
+
+Aggregates SHALL:
+
+- Have exactly one Aggregate Root.
+- Own its Entities, Value Objects and Validation rules.
+- Expose behavior through its Aggregate Root.
+- Aggregates are PEERS and SHALL NOT contain other Aggregates.
+- Have a ubiquitous `name` inside the Domain scope that is used to prefix all its technical artifacts.
+
+#### 2.1: Model
 
 The Model is composed by the compound of ISOLATED models of each of its Aggregates:
 
@@ -87,7 +85,7 @@ Proposal (Root)
 
 </maybe delete this section>
 
-### 2.2: Identity-Based References
+#### 2.2: Identity-Based References
 
 Aggregates SHALL reference other Aggregates only through identities.
 
@@ -119,11 +117,11 @@ proposal.simulation.calculateLoan();
 
 </maybe delete this section>
 
-******\*\*\******* ficou por aqui ****\*****
+**\*\***\*\*\***\*\*** ficou por aqui \***\*\*\*\***
 
 ## Aggregates must remain independent.
 
-## Principle 6: Aggregate Roots Own State Transitions
+#### Principle 6: Aggregate Roots Own State Transitions
 
 All state transitions SHALL be exposed through Aggregate Root operations.
 Allowed:
@@ -221,54 +219,6 @@ Every generated Domain SHALL expose metadata describing:
 - Runtime discoverability
 
 ---
-
-# Architectural Structure
-
-Generated Domains SHALL follow this structure:
-
-```text
-<domain>/
-├── <domain>-model.ts
-├── <domain>-dto.ts
-├── <domain>-service.ts
-├── <domain>-controller.ts
-│
-├── <aggregate-a>/
-│   ├── <aggregate-a>-domain.ts
-│   ├── <aggregate-a>-repository.ts
-│   └── <aggregate-a>-repository-impl.ts
-│
-├── <aggregate-b>/
-│   ├── <aggregate-b>-domain.ts
-│   ├── <aggregate-b>-repository.ts
-│   └── <aggregate-b>-repository-impl.ts
-│
-└── metadata/
-	└── <domain>-definition.ts
-```
-
-Example:
-
-```text
-onboarding/
-├── onboarding-model.ts
-├── onboarding-dto.ts
-├── onboarding-service.ts
-├── onboarding-controller.ts
-│
-├── simulation/
-│   ├── simulation-domain.ts
-│   ├── simulation-repository.ts
-│   └── simulation-sqlite-repository.ts
-│
-├── proposal/
-│   ├── proposal-domain.ts
-│   ├── proposal-repository.ts
-│   └── proposal-sqlite-repository.ts
-│
-└── metadata/
-	└── onboarding-definition.ts
-```
 
 ---
 
@@ -442,6 +392,61 @@ Repositories SHALL:
 
 ---
 
+## Predictable Structure (PS)
+
+Domain generation and maintenance MUST follow a predictable structure that ensures location, namings and metadata consistency across the codebase.
+Agents MUST assume and ENSURE that all generated or maintained Domains and Aggregates adhere to this predictable structure.
+
+### PS-1: Architectural Structure
+
+Domains SHALL follow the predictable architectural structure illustrated below:
+
+```text
+<domain>/
+<domain>/<domain>-metadata.json
+<domain>/<domain-controller-code>
+<domain>/<domain-service-code>
+<domain>/<aggregate[name]>/
+<domain>/<aggregate[name]>/<aggregate[name]-controller-code>
+<domain>/<aggregate[name]>/<aggregate[name]-service-code>
+<domain>/<aggregate[name]>/<aggregate[name]-domain-code>
+<domain>/<aggregate[name]>/<aggregate[name]-repository-code>
+```
+
+Legend:
+
+- `domain-comtroller-code`: Gives access to Domain-level controller logic. May have several implementations.
+- `domain-service-code`: Gives access to Domain-level service logic. May be invoked by controllers or other services within the Domain.
+- `aggregate[name]`: Each aggregate as a ubiquitous name within the Domain.
+- `aggregate[name]-controller-code`:
+- `aggregate[name]-service-code`
+- `aggregate[name]-domain-code`
+- `aggregate[name]-repository-code`
+
+-
+
+### PS-2: Metadata structure
+
+Domains MUST include a metadata document `<domain>-metadata.json`, in JSON format, located at the root of the Domain folder.
+Metada documents MUST follow the structure defined in the Domain Metadata Template `templates/domain-metadata-template.md`.
+
+```text
+<domain>/
+<domain>/<domain>-metadata.json
+<domain>/<domain-controller-code>
+<domain>/<domain-service-code>
+<domain>/<aggregate-a>/
+<domain>/<aggregate-a>/<aggregate[name]-controller-code>
+<domain>/<aggregate-a>/<aggregate[name]-service-code>
+<domain>/<aggregate-a>/<aggregate[name]-domain-code>
+<domain>/<aggregate-a>/<aggregate[name]-repository-code>
+<domain>/<aggregate-b>/
+<domain>/<aggregate-b>/<aggregate[name]-controller-code>
+<domain>/<aggregate-b>/<aggregate[name]-service-code>
+<domain>/<aggregate-b>/<aggregate[name]-domain-code>
+<domain>/<aggregate-b>/<aggregate[name]-repository-code>
+```
+
 # Metadata Contract
 
 Every generated Domain SHALL expose:
@@ -564,3 +569,9 @@ Services orchestrate use cases and cross-Aggregate interactions.
 DTOs define integration contracts.
 Metadata provides discoverability and AI-driven introspection.
 External consumers interact exclusively through the Domain Service API and SHALL NEVER directly manipulate Aggregate Roots, Entities, Value Objects or Repositories.
+
+# End of Specification
+
+[ ] No deviations are allowed unless explicitly approved by the user.
+
+[ ] Any doubts or uncertainties should be resolved by consulting the user to ensure alignment with the defined architectural principles.
