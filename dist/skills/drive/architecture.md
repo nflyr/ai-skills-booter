@@ -13,9 +13,9 @@ You MUST follow the architecture principles for development of software describe
 
 ## Naming placeholders and conventions
 
-The specification of file paths and coding templates, you MUST interpret `{Placeholder}` as the literal that represents one of the values mentioned in the table below.
-The placeholder literal defines the casing convention to use in case of names (not in the case of descriptions).
-For example, if you have a domain named `InvoiceDetail` then it assumes the casing used in the placeholder:
+When reading the specifications for file paths and coding templates, interpret `{Placeholder}` as the literal that represents one of the values mentioned in the table below.
+
+The placeholder literal defines the casing convention to use for names (not descriptions). For example, if you have a domain named `InvoiceDetail`, then match the placeholder in the following map:
 
 - `{DomainName}` becomes `InvoiceDetail`
 - `{domainName}` becomes `invoiceDetail`
@@ -32,12 +32,12 @@ For example, if you have a domain named `InvoiceDetail` then it assumes the casi
 
 Elements of the Domain Model: **Domain**, **Aggregate**, **Entity**, **Value Object**.
 
-- Domain is identified by a ubiquitous name and a mandatory description.
-- Domains contains one or more Aggregates.
-- Aggregate is identified by a ubiquitous name in the Domain context that may match the Domain's name and a mandatory description.
-- Aggregates contains one or more elements of type "Entity" and zero or more elements of type "Value Object".
+- A Domain is identified by a ubiquitous name and a mandatory description.
+- Domains contain one or more Aggregates.
+- An Aggregate is identified by a ubiquitous name in the Domain context that may match the Domain's name and a mandatory description.
+- Aggregates contain one or more elements of type "Entity" and zero or more elements of type "Value Object".
 - Aggregates may declare elements of type "Type" (reusable data structures).
-- Entity is identified by a ubiquitous name in the Domain context that may match the Aggregate's name and a mandatory description.
+- An Entity is identified by a ubiquitous name in the Domain context that may match the Aggregate's name and a mandatory description.
 - The Aggregate root is the Entity with the same name as the Aggregate unless explicitly declared otherwise.
 -
 
@@ -52,6 +52,11 @@ Repository
 <draft>
 
 - All domain code is placed in the same folder at `(...)/domain/{DomainName}`.
-- Domain exposes its model and behaviour through module `{DomainName}-declaration.ts` that follow template `template--model-declaration.ts`.
-- Domain exposes DTOs and structures through module `{DomainName}-declaration.ts` that follow template `template--model-definition.ts`.
-- Domain implements business logic DTOs and structures through module `{DomainName}-declaration.ts` that follow template `template--model-definition.ts`.
+
+The Domain:
+
+- Exposes its model and behaviour through the module `{DomainName}-declaration.ts` that follows the template `template--model-declaration.ts`.
+
+- Exposes DTOs and structures through the module `{DomainName}-declaration.ts` that follows the template `template--model-definition.ts`.
+
+- Implements DTOs and structures through the module `{DomainName}-declaration.ts` that follows the template `template--model-definition.ts`.

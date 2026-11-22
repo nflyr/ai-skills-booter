@@ -1,6 +1,7 @@
 ---
 name: drive
 description: Design and implement software from business requirements following a specific production cycle and architecture principles.
+disable-model-invocation: true
 ---
 
 Your job is to interpret business requirements provided by the user for the creation or modification of software, produce specifications and then write the code that implements the specifications.
@@ -42,16 +43,16 @@ Ideation may require agent to be aware of:
 
 Ideation ends only when:
 
-- The user agrees with the proposed set of Features, or
+- The user agrees with the proposed set of Features ONE by ONE, or
 - The user cancels the session.
 
-Do not enter Plan or Implement modes when in a Ideation session.
+Do not enter Plan or Implement modes when in an Ideation session.
 
 ## Plan
 
 The agent MUST use `planner.md` to perform all planning tasks.
 
-Only listed tasks are allowed. The agent MUST never break the rules defined in `manage-plans.md`.
+Only listed tasks are allowed. The agent MUST never break the rules defined in `planner.md`.
 
 Plan ends when the user confirms the requested planning changes or cancels the session.
 

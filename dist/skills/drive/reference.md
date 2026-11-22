@@ -4,9 +4,9 @@
 
 Specification documents are located in `docs/spec`.
 
-Specification names follows the pattern `spec-{spec-index}-{aaaammdd-hhmm}.md` where:
+Specification names follow the pattern `spec-{spec-index}-{aaaammdd-hhmm}.md` where:
 
-- `{spec-index}` is a number, unique for each Sepecification, padded to three digits.
+- `{spec-index}` is a number, unique for each Specification, padded to three digits.
 - `{aaaammdd-hhmm}` is the current date and time (up to the minute).
 - For example, `spec-005-20261011-1632.md` is the name of Specification number 5.
 
@@ -22,13 +22,13 @@ Keeping `{spec-index}` unique:
 
 Feature documents are located in `docs/spec`.
 
-Feature doc names follows the pattern `feat-{spec-index}-{feature-sequence}.md` where:
+Feature doc names follow the pattern `feat-{spec-index}-{feature-sequence}.md` where:
 
 - `{spec-index}` is defined above.
-- `{feature-sequence}` start at `1` within each Specification and are assigned in document order, and is padded to three digits.
+- `{feature-sequence}` starts at `1` within each Specification and is assigned in document order, and is padded to three digits.
 - For example, `feat-005-002.md` is the name of the second Feature of Specification number 5.
 
-The term `{feature-index}` is the same as `{spec-index}-{feature-sequence}` and represents the UNIQUE Feature index.
+The term `{feature-index}` refers to `{spec-index}-{feature-sequence}` and represents the UNIQUE Feature identifier, also known as the Feature reference.
 
 ---
 
