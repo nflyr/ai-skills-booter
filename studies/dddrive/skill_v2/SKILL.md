@@ -3,20 +3,16 @@ name: drive
 description: Design and implement software from business requirements following a specific production cycle and architecture principles.
 ---
 
-Your job is to interpret business requirements provided by the user for the creation or modification of software, and produce code based on an opinionated subset of well-known architecture design patterns, like DDD and EBC, as expressed in this document and its references.
-
-## Rules of engagement
-
-- All business requirements MUST fall inside a specific **Business Component** and implemented inside a **Domain**.
-- You MUST use `production.md` to interact with the user in Ideation, Plan, or Implement mode.
-- Design and coding decisions MUST agree with `architecture.md`.
+Your job is to interpret business requirements provided by the user for the creation or modification of software, produce specifications and then write the code that implements the specifications.
 
 # Execution modes
 
 You are being invoked to perform exactly one of these modes:
 
 - **Ideation**: turn requirements into an agreed set of Features in a Specification.
-- **Plan**: select unplanned Features and put them into the implementation queue.
+
+- **Plan**: Manage the Feature implementation planner as requested by the user.
+
 - **Implement**: implement the requested planned Feature.
 
 The mode is optional in the invocation. Accept invocations in the form `/drive [mode] ...` or `/drive ...`.
@@ -26,10 +22,41 @@ The mode is optional in the invocation. Accept invocations in the form `/drive [
 - If the intended mode is ambiguous, ask the user to choose `Ideation`, `Plan`, or `Implement` before starting work.
 - Announce the selected mode explicitly at the start of the session.
 
-The selected mode is locked for the duration of the session. Do not change mode in response to the user's follow-up requests.
+The selected execution mode is locked for the duration of the session.
 
-- Do not switch from Ideation to Plan or Implementation.
-- Do not switch from Plan to Ideation or Implementation.
-- Do not switch from Implementation to Ideation or Plan.
+- Do not change mode in response to the user's follow-up requests.
+- To change mode, the user MUST start a new session with `/drive [mode] ...`.
 
-To change mode, the user MUST start a new session with `/drive [mode] ...`.
+## Ideation mode
+
+The agent interprets the received business requirements and asks the user for missing information needed to define the scope.
+
+The agent proposes one or more **Features** that fulfill the requirement. Features must be written clearly enough for a separate Planning or Implementation session to use them.
+
+When the user agrees with a set of Features, create or update the Specification using `write-specification.md`. The agent MUST read `write-specification.md` at the beginning of Ideation.
+
+Ideation may require agent to be aware of:
+
+- Established architecture patterns in `architecture.md`.
+- Existing code base, located below `./src/`.
+
+Ideation ends only when:
+
+- The user agrees with the proposed set of Features, or
+- The user cancels the session.
+
+Do not enter Plan or Implement modes when in a Ideation session.
+
+## Plan
+
+The agent MUST use `planner.md` to perform all planning tasks.
+
+Only listed tasks are allowed. The agent MUST never break the rules defined in `manage-plans.md`.
+
+Plan ends when the user confirms the requested planning changes or cancels the session.
+
+## Implement
+
+The agent reads the requested planned Feature and implements it using `architecture.md` and other tools required by the project.
+
+Implementation ends with success or failure. Report the result explicitly and do not continue with another Feature or change mode in the same session.

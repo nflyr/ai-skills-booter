@@ -4,42 +4,43 @@ When business specifications are agreed and closed with the user, write them int
 
 **NO BUSINESS OR ARCHITECTURAL DECISIONS CAN BE CREATED OR MUTATED IN THE WRITE ACTION**
 
-**Documentation principles**
+## Information hierarchy
 
-- Business Requirements are translated into an _implementation_ **Specification** at the end of an **Ideation** interaction.
+Business Requirements are translated into a Specification at the end of an Ideation session.
+
+**Specification**
+
+- Is composed of **Features** to be implemented.
+
+**Feature**:
+
+- Is composed of **Tasks** to be performed.
+- Delivers one coherent business requirement.
+- Is the smallest unit of deployment.
+
+**Task**
+
+- Describes a single goal or action inside the Feature.
+
+- **The user MUST explicitly agree to each Feature that is going to be saved in the Specification**
+
+Business Requirements are translated into an _implementation_ **Specification** at the end of an **Ideation** interaction.
 
 - A **Specification** is composed of **Features** to be implemented.
 
 - A **Feature** is composed of **Tasks** to be performed.
 
-- One **Feature** delivers one **coherent** business requirement as is the smaller unit of deployment.
+- One **Feature** delivers one coherent business requirement as is the smallest unit of deployment.
 
-- **The user MUST explicitly agree to each Feature that is going to be saved in the Specification**
+- **The user MUST explicitly agree to each Feature that is going to be saved in the Specification**.
 
 ## Specification
 
-All the agreed Specification documents from present or passed interactions are kept in the project so that they serve as an historical log of decisions.
-Specifications are immutable after they are written. Do not edit the contents of an existing Specification.
-The filename of each document must reflect both a numeric sequence and also the date and time when the document was originally written.
-A JSON file `docs/spec/counter.json` is persisted and its Specification counter `spec-index` is incremented whenever a new Specification document is created.
+All agreed Specification documents from current and past interactions are kept in the project as a historical record of decisions.
 
-If `docs/spec/counter.json` does not exist, create it with the following contents:
+Each Specification has a unique index, as described in the `## Specification naming and reference` section of `reference.md`.
 
-```json
-{
-   "spec-index": 0
-}
-```
-
-New specification documents are saved into `./docs/spec/spec-{sss}-{aaaammdd-hhmm}.md`, where `{sss}` is the next `spec-index` (001, 002, ...) and `{aaaammdd-hhmm}` is the current date and time (up to the minute).
-
-Before creating a new Specification, atomically increment `spec-index` and keep the allocated index in memory for the entire Ideation session.
-
-If `counter.json` is missing or inconsistent with the Specification files, recover it by setting `spec-index` to one greater than the highest Specification index found on disk. Do not reuse a Specification index after its allocation has been recorded.
-
-**Format**
-
-The Specification document MUST be based on the following skeleton:
+### Specification template
 
 ```markdown
 # Specification #{place:spec-index}
@@ -55,23 +56,39 @@ The Specification document MUST be based on the following skeleton:
 
 ---
 
-{place: a section for each Feature, see template below}
+{place: append a section for each Feature, using `### Feature template`}
 ```
 
 ## Feature
 
-**Features principles**
+Main Feature characteristics:
 
-- MUST be written with enough detail so that it can be later picked by another agent and independently proceed to the **Plan** or **Implementation** phases.
+- Is the smallest unit of work in the Plan and Implementation phases.
 
-- MUST have a unique identifier composed of the Specification index and the Feature sequence inside that Specification.
-- `{feat-index}` MUST use the format `{spec-index}-{feature-sequence}` with both components padded to three digits, for example `005-002`.
-- Feature sequences start at `1` within each Specification and are assigned in document order.
+- MUST contain enough detail for another agent to independently carry it through the Plan or Implementation phases.
 
-The Feature documentation MUST follow the template defined below, each new Feature appends a section into the Specification document.
+- MUST have a unique identifier in the whole project.
+
+The Feature is saved and exposed to the production cycle in three ways:
+
+- The Feature text is added into the Specification document. Append a section for each new Feature. There is a location identified in the "### Specification template" above.
+
+- The Feature text is saved in a standalone document with a unique file name.
+
+- An entry in added to the `unplanned` section of the Planner, as described in "### Add" section of `planner.md`.
+
+Execution rules:
+
+- The Feature text MUST follow the template defined in `### Feature template` section below.
+
+- Both Feature identifier and filename MUST follow the instructions described in the `## Feature naming and reference` section of `reference.md`.
+
+- For performance reasons, the insertion of the Feature reference to the Planner is delayed to be done in bulk, at the end, after writing the whole Specification and Features.
+
+### Feature template
 
 ```markdown
-## {place: feat-index} - {place: Feature title}
+## {place: `{spec-index}-{feature-sequence}`} - {place: Feature title}
 
 {place: description of feature specification}
 
@@ -84,40 +101,16 @@ The Feature documentation MUST follow the template defined below, each new Featu
 **..._(next task)_...**
 
 ---
-
-..._(next feature)_...
 ```
-
-**Features as local tickets**
-
-Besides being included in the Specification document, each Feature MUST always be written to a local standalone ticket.
-
-- Path: `./docs/spec/feat-{sss}-{fff}.md`
-- `{sss}` is the Specification index that contains the Feature.
-- `{fff}` is the Feature sequence inside the Specification.
-- Use the Feature markdown template above for the ticket text.
-
-The local ticket is the persistent Feature reference. The `feat-index` MUST be used consistently in:
-
-- Specification Feature headings.
-- Local ticket filenames.
-- Planner Feature references.
-- References to a Feature in later sessions.
-
-After all agreed Features are written, add each new Feature reference to `planner.json` in `unplanned` with the timestamp when it was first added.
-
 
 ## Updates or revocations
 
-Specifications are immutable historical records. If an agreed Feature changes or is removed:
+Because Specifications are immutable historical records, do not edit or rewrite existing Specification documents. Do not reuse or renumber the old Feature identifier.
 
-1. Allocate a new Specification index and create a new Specification document.
-2. Rewrite the changed Feature in the new Specification with a new `{spec-index}-{feature-sequence}` identifier.
-3. Write the rewritten Feature to a new local ticket.
-4. Add the rewrite to `planner.json` when the new Feature is approved and should be planned.
-5. In the old local ticket, add an annotation identifying the rewrite and its new Feature reference.
-6. If the old Feature is removed rather than rewritten, annotate the old local ticket as `Removed` and reference the new Specification that records the removal.
+If a new Feature requires changes to or removal of previous Features from another Specification:
 
-Do not edit or rewrite the old Specification document. Do not reuse or renumber the old Feature identifier.
-
-If cancellation removes a Feature that is unplanned or scheduled, remove its active reference from `unplanned` or `scheduled` in `planner.json`. If it is completed, preserve the completed history and annotate both the ticket and the new Specification record.
+1. Create the new Feature like any other Feature.
+2. Add initial/specific Tasks to mark the affected older Features as deleted or replaced.
+3. For each of the affected older Features:
+   - Add an annotation at the very top of the document with the text "**Deleted by `{feature-index}`**" or "**Replaced by `{feature-index}`**".
+   - Update the planner, moving the Feature to `completed` with status "deleted" or "replaced".
